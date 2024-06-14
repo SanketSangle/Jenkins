@@ -16,14 +16,18 @@ wget https://download.bell-sw.com/java/11.0.4/bellsoft-jdk11.0.4-linux-amd64.rpm
 rpm -ivh bellsoft-jdk11.0.4-linux-amd64.rpm 
 
 #alternatives --config java
+
 Configure Linux System for Sonarqube
+
 echo 'vm.max_map_count=262144' >/etc/sysctl.conf
 sysctl -p
 echo '* - nofile 80000' >>/etc/security/limits.conf
 sed -i -e '/query_cache_size/ d' -e '$ a query_cache_size = 15M' /etc/my.cnf
 systemctl restart mysqld
+
 Configure Database for Sonarqube
-mysql -p -u root -pPiyu@5233
+
+mysql -p -u root -pRedhat@123
 mysql>
     create database sonarqube;
     create user 'sonarqube'@'localhost' identified by 'Redhat@123';
@@ -58,3 +62,10 @@ when we login first time sonarqube
 
 username = admin
 password = admin
+
+
+sonarcubeconfig
+mvn sonar:sonar \
+  -Dsonar.projectKey=studentapp \
+  -Dsonar.host.url=http://100.25.48.71:9000 \
+  -Dsonar.login=58591ce46226a22a12aaaad3974e2f64e1b8df56
